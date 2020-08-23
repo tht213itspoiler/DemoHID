@@ -84,6 +84,7 @@ namespace WpfApp1
         private void btnSendData_Click(object sender, RoutedEventArgs e)
         {
             var chosenDev = CurrentHIDs[cboDevices.Text];
+            var SendBytes = new List<byte>();
 
             if (string.IsNullOrEmpty(txtSendData.Text))
             {
@@ -98,7 +99,10 @@ namespace WpfApp1
                 if (IsHexStringFormat(txtSendData.Text.Trim()))
                 {
                     sendString = "00-" + txtSendData.Text.Trim();
-                    sendString = FromHexStringToASCII(sendString);
+
+                   
+                        SendBytes.AddRange(FromHexStringToDecList(sendString));
+                    
                 }
                 else
                 {
@@ -109,11 +113,8 @@ namespace WpfApp1
             else
             {
                 sendString = "0" + txtSendData.Text.Trim();
+                SendBytes.AddRange(Encoding.ASCII.GetBytes(sendString.Trim()).ToList());
             }
-
-            var SendBytes = new List<byte>();
-
-            SendBytes.AddRange(Encoding.ASCII.GetBytes(sendString.Trim()).ToList());
 
             if (LastReadStatus != HidDeviceData.ReadStatus.Success)
             {
@@ -140,23 +141,16 @@ namespace WpfApp1
             {
                 txtConsole.Text += Environment.NewLine + "Read successful";
 
-                var output = new List<byte>();
-
-                foreach (var bt in reading.Data)
-                {
-                    if (bt != 0)
-                    {
-                        output.Add(bt);
-                    }
-                }
+                var dataList = reading.Data.ToList();
+                dataList.RemoveAt(0);
 
                 if (chk.IsChecked == true)
                 {
-                    txtReadData.Text = ConvertASCIItoHEX(Encoding.ASCII.GetString(output.ToArray(), 0, output.Count));
+                    txtReadData.Text = BitConverter.ToString(dataList.ToArray());
                 }
                 else
                 {
-                    txtReadData.Text = Encoding.ASCII.GetString(output.ToArray(), 0, output.Count);
+                    txtReadData.Text = Encoding.ASCII.GetString(dataList.ToArray(), 0, dataList.Count);
                 }
             }
             else if (reading.Status == HidDeviceData.ReadStatus.NoDataRead)
@@ -173,17 +167,8 @@ namespace WpfApp1
 
         private void CheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
-            if (!IsHexStringFormat(txtSendData.Text))
-            {
-                txtSendData.Text = "";
-                txtConsole.Text += Environment.NewLine + "Input string is not hex format";
-            }
-            else
-            {
-                txtSendData.Text = FromHexStringToASCII(txtSendData.Text);
-            }
-
-            txtSendData.Text = FromHexStringToASCII(txtReadData.Text);
+            txtSendData.Text = "";
+            txtReadData.Text = "";
         } 
 
         #endregion
@@ -271,27 +256,17 @@ namespace WpfApp1
             return hexStr;
         }
 
-        string FromHexStringToASCII(string hexString)
+        List<byte> FromHexStringToDecList(string hexString)
         {
-            // initialize the ASCII code string as empty. 
-            var ascii = "";
+            var decVals = new List<byte>();
 
-            hexString = hexString.Replace("-", "");
-
-            for (int i = 0; i < hexString.Length; i += 2)
+            foreach (var hex in hexString.Split('-'))
             {
-                // extract two characters from hex string 
-                var part = hexString.Substring(i, 2);
-
-                // change it into base 16 and  
-                // typecast as the character 
-                char ch = (char)Convert.ToInt32(part, 16);
-
-                // add this char to final ASCII string 
-                ascii = ascii + ch;
+                var decVal = Convert.ToByte(hex, 16);
+                decVals.Add(decVal);
             }
 
-            return ascii;
+            return decVals;
         }
 
         bool IsHexStringFormat(string hexstr)
