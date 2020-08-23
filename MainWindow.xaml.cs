@@ -24,8 +24,9 @@ namespace WpfApp1
     public partial class MainWindow : Window
     {
         Dictionary<string, HidDevice> CurrentHIDs;
-
         HidDeviceData.ReadStatus LastReadStatus;
+
+        string OldSendContext;
 
         public MainWindow()
         {
@@ -149,7 +150,14 @@ namespace WpfApp1
                     }
                 }
 
-                txtReadData.Text = Encoding.ASCII.GetString(output.ToArray(), 0, output.Count);
+                if (chk.IsChecked == true)
+                {
+                    txtReadData.Text = ConvertASCIItoHEX(Encoding.ASCII.GetString(output.ToArray(), 0, output.Count));
+                }
+                else
+                {
+                    txtReadData.Text = Encoding.ASCII.GetString(output.ToArray(), 0, output.Count);
+                }
             }
             else if (reading.Status == HidDeviceData.ReadStatus.NoDataRead)
             {
@@ -160,12 +168,23 @@ namespace WpfApp1
         private void CheckBoxChecked(object sender, RoutedEventArgs e)
         {
             txtSendData.Text = ConvertASCIItoHEX(txtSendData.Text);
+            txtReadData.Text = ConvertASCIItoHEX(txtReadData.Text);
         }
 
         private void CheckBoxUnchecked(object sender, RoutedEventArgs e)
         {
-            txtSendData.Text = FromHexStringToASCII(txtSendData.Text);
-        }
+            if (!IsHexStringFormat(txtSendData.Text))
+            {
+                txtSendData.Text = "";
+                txtConsole.Text += Environment.NewLine + "Input string is not hex format";
+            }
+            else
+            {
+                txtSendData.Text = FromHexStringToASCII(txtSendData.Text);
+            }
+
+            txtSendData.Text = FromHexStringToASCII(txtReadData.Text);
+        } 
 
         #endregion
 
@@ -266,7 +285,7 @@ namespace WpfApp1
 
                 // change it into base 16 and  
                 // typecast as the character 
-                char ch = (char)Convert.ToInt32(part, 16); ;
+                char ch = (char)Convert.ToInt32(part, 16);
 
                 // add this char to final ASCII string 
                 ascii = ascii + ch;
@@ -280,9 +299,10 @@ namespace WpfApp1
             return Regex.IsMatch(hexstr, "^[A-z0-9]{2}(-[A-z0-9]{2}){0,31}$");
         }
 
+
         #endregion
 
-        
+      
     }
 
 
