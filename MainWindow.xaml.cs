@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
 //using HidSharp;
-using HidLibrary;
+using WpfApp1.HidLib;
 
 namespace WpfApp1
 {
@@ -24,6 +24,8 @@ namespace WpfApp1
     public partial class MainWindow : Window
     {
         Dictionary<string, HidDevice> CurrentHIDs;
+
+        HidDeviceData.ReadStatus LastReadStatus;
 
         public MainWindow()
         {
@@ -35,11 +37,16 @@ namespace WpfApp1
             {
                 cboDevices.Items.Add(item);
             }
+
+
+            btnSendData.IsEnabled = false;
+            btnReadData.IsEnabled = false;
         }
 
         #region Events Handler
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            LastReadStatus = HidDeviceData.ReadStatus.Success;
             if (string.IsNullOrEmpty(cboDevices.Text))
             {
                 txtConsole.Text += Environment.NewLine + "Please choose device";
@@ -53,6 +60,9 @@ namespace WpfApp1
                         btnConnect.Content = "Disconnect";
                         cboDevices.IsHitTestVisible = false;
                         cboDevices.Focusable = false;
+
+                        btnSendData.IsEnabled = true;
+                        btnReadData.IsEnabled = true;
                     }
                 }
                 else
@@ -62,6 +72,9 @@ namespace WpfApp1
                         btnConnect.Content = "Connect";
                         cboDevices.IsHitTestVisible = true;
                         cboDevices.Focusable = true;
+
+                        btnSendData.IsEnabled = false;
+                        btnReadData.IsEnabled = false;
                     }
                 }
             }
@@ -101,6 +114,11 @@ namespace WpfApp1
 
             SendBytes.AddRange(Encoding.ASCII.GetBytes(sendString.Trim()).ToList());
 
+            if (LastReadStatus != HidDeviceData.ReadStatus.Success)
+            {
+                chosenDev.CloseDevice();
+            }
+
             if (chosenDev.Write(SendBytes.ToArray(), 500))
             {
                 txtConsole.Text += Environment.NewLine + "Write successful";
@@ -114,7 +132,8 @@ namespace WpfApp1
         private void btnReadData_Click(object sender, RoutedEventArgs e)
         {
             var chosenDev = CurrentHIDs[cboDevices.Text];
-            var reading = chosenDev.Read(10);
+            var reading = chosenDev.Read(100);
+            LastReadStatus = reading.Status;
 
             if (reading.Status == HidDeviceData.ReadStatus.Success)
             {
@@ -130,7 +149,11 @@ namespace WpfApp1
                     }
                 }
 
-                txtReadData.Text += Environment.NewLine + Encoding.ASCII.GetString(output.ToArray(), 0, output.Count);
+                txtReadData.Text = Encoding.ASCII.GetString(output.ToArray(), 0, output.Count);
+            }
+            else if (reading.Status == HidDeviceData.ReadStatus.NoDataRead)
+            {
+                txtConsole.Text += Environment.NewLine + "No data to read";
             }
         }
 

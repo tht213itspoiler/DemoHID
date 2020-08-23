@@ -75,7 +75,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HIDDevices\Keyboards.cs" />
+    <Compile Include="HidLib\Extensions.cs" />
+    <Compile Include="HidLib\HidAsyncState.cs" />
+    <Compile Include="HidLib\HidDevice.cs" />
+    <Compile Include="HidLib\HidDeviceAttributes.cs" />
+    <Compile Include="HidLib\HidDeviceCapabilities.cs" />
+    <Compile Include="HidLib\HidDeviceData.cs" />
+    <Compile Include="HidLib\HidDeviceEventMonitor.cs" />
+    <Compile Include="HidLib\HidDevices.cs" />
+    <Compile Include="HidLib\HidFastReadDevice.cs" />
+    <Compile Include="HidLib\HidReport.cs" />
+    <Compile Include="HidLib\IHidDevice.cs" />
+    <Compile Include="HidLib\IHidEnumerator.cs" />
+    <Compile Include="HidLib\NativeMethods.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -108,5 +120,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

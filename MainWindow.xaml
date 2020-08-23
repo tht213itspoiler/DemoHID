@@ -12,9 +12,9 @@
             AcceptsReturn="True" 
             VerticalContentAlignment="Bottom" />
         <ComboBox x:Name="cboDevices" HorizontalAlignment="Left" Margin="129,78,0,0" VerticalAlignment="Top" Width="519"/>
-        <TextBox x:Name="txtSendData" HorizontalAlignment="Left" Height="23" Margin="129,126,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="519"/>
+        <TextBox x:Name="txtSendData" HorizontalAlignment="Left" Height="23" Margin="129,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="519"/>
         <Button x:Name="btnSendData" Content="Send" HorizontalAlignment="Left" Margin="667,121,0,0" VerticalAlignment="Top" Width="86" Height="28" Click="btnSendData_Click"/>
-        <TextBox x:Name="txtReadData" HorizontalAlignment="Left" Height="60" Margin="129,178,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="519"/>
+        <TextBox x:Name="txtReadData" HorizontalAlignment="Left" Height="60" Margin="129,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="519"/>
         <Button x:Name="btnReadData" Content="Read" HorizontalAlignment="Left" Margin="667,188,0,0" VerticalAlignment="Top" Width="86" Height="28" Click="btnReadData_Click"/>
         <CheckBox x:Name="chk" Content="HEX code" HorizontalAlignment="Left" Margin="44,130,0,0" VerticalAlignment="Top" Checked="CheckBoxChecked" Unchecked="CheckBoxUnchecked"/>
 
