@@ -42,6 +42,8 @@ namespace WpfApp1
 
             btnSendData.IsEnabled = false;
             btnReadData.IsEnabled = false;
+
+           
         }
 
         #region Events Handler
@@ -275,9 +277,14 @@ namespace WpfApp1
         }
 
 
+
         #endregion
 
-      
+        private void txtConsole_IsVisibleChanged(object sender, TextChangedEventArgs e)
+        {
+            txtConsole.SelectionStart = txtConsole.Text.Length;
+            txtConsole.ScrollToEnd();
+        }
     }
 
 

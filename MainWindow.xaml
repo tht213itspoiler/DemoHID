@@ -9,8 +9,8 @@
     <Grid>
         <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="667,72,0,0" VerticalAlignment="Top" Width="86" Height="28" Click="button_Click"/>
         <TextBox x:Name="txtConsole" HorizontalAlignment="Left" Height="130" Margin="129,258,0,0" TextWrapping="Wrap" Text="Console" VerticalAlignment="Top" Width="519"
-            AcceptsReturn="True" 
-            VerticalContentAlignment="Bottom" />
+            AcceptsReturn="True" TextChanged="txtConsole_IsVisibleChanged" 
+            VerticalContentAlignment="Bottom" VerticalScrollBarVisibility="Auto" />
         <ComboBox x:Name="cboDevices" HorizontalAlignment="Left" Margin="129,78,0,0" VerticalAlignment="Top" Width="519"/>
         <TextBox x:Name="txtSendData" HorizontalAlignment="Left" Height="23" Margin="129,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="519"/>
         <Button x:Name="btnSendData" Content="Send" HorizontalAlignment="Left" Margin="667,121,0,0" VerticalAlignment="Top" Width="86" Height="28" Click="btnSendData_Click"/>
