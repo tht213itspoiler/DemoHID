@@ -26,8 +26,6 @@ namespace WpfApp1
         Dictionary<string, HidDevice> CurrentHIDs;
         HidDeviceData.ReadStatus LastReadStatus;
 
-        string OldSendContext;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -39,11 +37,8 @@ namespace WpfApp1
                 cboDevices.Items.Add(item);
             }
 
-
             btnSendData.IsEnabled = false;
-            btnReadData.IsEnabled = false;
-
-           
+            btnReadData.IsEnabled = false;         
         }
 
         #region Events Handler
@@ -66,6 +61,7 @@ namespace WpfApp1
 
                         btnSendData.IsEnabled = true;
                         btnReadData.IsEnabled = true;
+                        btnRescan.IsEnabled = false;
                     }
                 }
                 else
@@ -78,6 +74,7 @@ namespace WpfApp1
 
                         btnSendData.IsEnabled = false;
                         btnReadData.IsEnabled = false;
+                        btnRescan.IsEnabled = true;
                     }
                 }
             }
@@ -158,6 +155,16 @@ namespace WpfApp1
             else if (reading.Status == HidDeviceData.ReadStatus.NoDataRead)
             {
                 txtConsole.Text += Environment.NewLine + "No data to read";
+            }
+        }
+
+        private void btnRescan_Click(object sender, RoutedEventArgs e)
+        {
+            cboDevices.Items.Clear();
+
+            foreach (var item in ScanDevicesToList())
+            {
+                cboDevices.Items.Add(item);
             }
         }
 
@@ -276,8 +283,6 @@ namespace WpfApp1
             return Regex.IsMatch(hexstr, "^[A-z0-9]{2}(-[A-z0-9]{2}){0,31}$");
         }
 
-
-
         #endregion
 
         private void txtConsole_IsVisibleChanged(object sender, TextChangedEventArgs e)
@@ -285,6 +290,8 @@ namespace WpfApp1
             txtConsole.SelectionStart = txtConsole.Text.Length;
             txtConsole.ScrollToEnd();
         }
+
+       
     }
 
 

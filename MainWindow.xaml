@@ -17,6 +17,7 @@
         <TextBox x:Name="txtReadData" IsReadOnly="True" HorizontalAlignment="Left" Height="60" Margin="129,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="519" />
         <Button x:Name="btnReadData" Content="Read" HorizontalAlignment="Left" Margin="667,188,0,0" VerticalAlignment="Top" Width="86" Height="28" Click="btnReadData_Click"/>
         <CheckBox x:Name="chk" Content="HEX code" HorizontalAlignment="Left" Margin="44,130,0,0" VerticalAlignment="Top" Checked="CheckBoxChecked" Unchecked="CheckBoxUnchecked"/>
+        <Button x:Name="btnRescan" Content="Rescan" HorizontalAlignment="Left" Margin="28,75,0,0" VerticalAlignment="Top" Width="86" Height="28" Click="btnRescan_Click"/>
 
     </Grid>
 </Window>

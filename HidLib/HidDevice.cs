@@ -674,7 +674,11 @@ namespace WpfApp1.HidLib
             {
                 NativeMethods.CancelIoEx(handle, IntPtr.Zero);
             }
-            NativeMethods.CloseHandle(handle);
+
+            if (NativeMethods.WaitForSingleObject(handle, 50) != NativeMethods.WAIT_TIMEOUT)
+            {
+                NativeMethods.CloseHandle(handle);
+            }
         }
 
         private void DeviceEventMonitorInserted()
